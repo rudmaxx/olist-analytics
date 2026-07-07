@@ -1,0 +1,17 @@
+SeLECT o.order_id,
+       o.order_purchase_t,
+       strftime('%Y-%m', o.order_purchase_t) AS ym,
+       cu.customer_state,
+       t.product_category_1 As category_en,
+       oi.price,
+       oi.freight_value,
+       r.review_score,
+       op.payment_type AS payment_method
+From olist_order_items_dataset oi
+JOIN olist_orders_dataset o USING (order_id)
+JOIN olist_customers_dataset cu USING (customer_id) 
+JOIN olist_products_dataset p USING (product_id)
+JOIN product_category_name_translation t  USING (product_category)
+JOIN olist_order_payments_dataset op USING (order_id)
+JOIN olist_order_reviews_dataset r USING (order_id)
+WHERE o.order_status = 'delivered';
